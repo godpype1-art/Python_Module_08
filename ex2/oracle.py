@@ -1,9 +1,3 @@
-# MATRIX_MODE: either "development" or "production"
-# DATABASE_URL: url to the database
-# API_KEY: some api key...?
-# LOG_LEVEL: one of "INFO", "DEBUG", "WARN", "ERROR" 
-# ZION_ENDPOINT: some url
-
 import os
 import sys
 
@@ -17,7 +11,7 @@ def main() -> None:
             "  run: pip install python-dotenv",
             sep="\n"
             )
-        sys.exit(1)
+        sys.exit()
 
     env: bool = load_dotenv()
 
@@ -37,50 +31,65 @@ def main() -> None:
         print("ORACLE STATUS: Reading the Matrix...")
         print()
         print("Configuration loaded:")
+
         print(f"Mode: {output['MATRIX_MODE']}")
+
         if not output["DATABASE_URL"]:
             print("Database: NOT CONFIGURED")
         elif "localhost" in output["DATABASE_URL"]:
             print("Database: Local instance")
         else:
             print("Database: Remote instance")
+
         if output["API_KEY"]:
-            print("API Access: Autenticated")
+            print("API Access: Authenticated")
         else:
             print("API Access: No Access")
+
         print(f"Log Level: {output['LOG_LEVEL']}")
+
         if not output["ZION_ENDPOINT"]:
             print("Zion Network: NOT CONFIGURED")
         elif "https" in output["ZION_ENDPOINT"]:
             print("Zion Network: Online")
         else:
             print("Zion Network: Offline")
+
     elif output["MATRIX_MODE"] == "production":
         print()
         print("ORACLE STATUS: Reading the Matrix...")
         print()
         print("Configuration loaded:")
+
         print(f"Mode: {output['MATRIX_MODE']}")
+
         if not output["DATABASE_URL"]:
             print("Database: [WARNING] NOT CONFIGURED")
         elif "localhost" in output["DATABASE_URL"]:
             print("Database: a production database shouldn't be local")
         else:
             print("Database: Remote instance")
+
         if output["API_KEY"]:
-            print("API Access: Autenticated")
+            print("API Access: Authenticated")
         else:
             print("API Access: [WARNING] Missing")
-        print(f"Log Level: {output['LOG_LEVEL']}")
+
+        if output['LOG_LEVEL']:
+            print(f"Log Level: {output['LOG_LEVEL']}")
+        else:
+            print("Log Level: INFO")
+
         if not output["ZION_ENDPOINT"]:
             print("Zion Network: [WARNING] NOT CONFIGURED")
         elif "https" in output["ZION_ENDPOINT"]:
             print("Zion Network: Online")
         else:
             print("Zion Network: Offline")
+
     else:
-         print("[ERROR] Invalid configuration")
-         sys.exit(1)
+        print("[ERROR] Invalid configuration")
+        sys.exit()
 
     print()
     print("Environment security check:")
